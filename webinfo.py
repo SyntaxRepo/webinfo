@@ -15,8 +15,8 @@ HTML_HOMEPAGE_TEMPLATE = """
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.45, shrink-to-fit=no">
-    <title>Jojohn Web Info Scanner - Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Info Scanner - Home</title>
     <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
@@ -82,7 +82,7 @@ HTML_HOMEPAGE_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Jojohn Web Info Scanner
+                Website Info Scanner
             </h1>
             <nav class="flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
@@ -99,7 +99,7 @@ HTML_HOMEPAGE_TEMPLATE = """
         <div class="text-center animate-fadeIn max-w-2xl mx-auto p-4 sm:p-8 md:p-12">
             <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4">Discover Website Details Instantly</h2>
             <p class="text-base md:text-lg text-gray-400 mb-8">
-                Jojohn Web Info Scanner tool provides you with crucial information about any website, including its IP address, geographical location, and hosting details. It's a simple, fast, and powerful way to gain insights.
+                Our Website Info Scanner tool provides you with crucial information about any website, including its IP address, geographical location, and hosting details. It's a simple, fast, and powerful way to gain insights.
             </p>
             <a href="/scanner" class="button-hover button-active bg-red-600 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full shadow-lg transition-all duration-300 ease-in-out inline-flex items-center gap-2">
                 <i class="fa-solid fa-arrow-right-to-bracket icon-animation"></i>
@@ -118,7 +118,7 @@ HTML_SCANNER_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jojohn Web Info Scanner</title>
+    <title>Website Info Scanner</title>
     <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
@@ -129,7 +129,7 @@ HTML_SCANNER_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            overflow-x: hidden;
+            /* Removed overflow-x: hidden; to allow natural scrolling on smaller screens */
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -199,7 +199,7 @@ HTML_SCANNER_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Jojohn Web Info Scanner
+                Website Info Scanner
             </h1>
             <nav class="flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
@@ -373,7 +373,7 @@ HTML_GEOLOCATION_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            overflow-x: hidden;
+            /* Removed overflow-x: hidden; to allow natural scrolling on smaller screens */
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -443,7 +443,7 @@ HTML_GEOLOCATION_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Jojohn Web Info Scanner
+                Website Info Scanner
             </h1>
             <nav class="flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
@@ -617,7 +617,7 @@ HTML_SPEEDTEST_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            overflow-x: hidden;
+            /* Removed overflow-x: hidden; to allow natural scrolling on smaller screens */
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -721,7 +721,7 @@ HTML_SPEEDTEST_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Jojohn Web Info Scanner
+                Website Info Scanner
             </h1>
             <nav class="flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
@@ -995,7 +995,7 @@ HTML_CONTACT_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jojoh Web Info Scanner - Contact</title>
+    <title>Website Info Scanner - Contact</title>
     <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
@@ -1006,7 +1006,7 @@ HTML_CONTACT_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            overflow-x: hidden;
+            /* Removed overflow-x: hidden; to allow natural scrolling on smaller screens */
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -1054,7 +1054,7 @@ HTML_CONTACT_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Jojohn Web Info Scanner
+                Website Info Scanner
             </h1>
             <nav class="flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
