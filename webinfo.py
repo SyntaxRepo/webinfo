@@ -27,6 +27,7 @@ HTML_HOMEPAGE_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
+            /* Prevents all scrolling */
             overflow: hidden;
         }
         @keyframes fadeIn {
@@ -129,7 +130,8 @@ HTML_SCANNER_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Removed overflow-x: hidden; to allow natural scrolling on smaller screens */
+            /* Prevents all scrolling */
+            overflow: hidden;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -373,7 +375,8 @@ HTML_GEOLOCATION_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Removed overflow-x: hidden; to allow natural scrolling on smaller screens */
+            /* Prevents all scrolling */
+            overflow: hidden;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -617,7 +620,8 @@ HTML_SPEEDTEST_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Removed overflow-x: hidden; to allow natural scrolling on smaller screens */
+            /* Prevents all scrolling */
+            overflow: hidden;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -1006,7 +1010,8 @@ HTML_CONTACT_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Removed overflow-x: hidden; to allow natural scrolling on smaller screens */
+            /* Prevents all scrolling */
+            overflow: hidden;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
