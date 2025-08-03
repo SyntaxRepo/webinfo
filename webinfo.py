@@ -16,7 +16,7 @@ HTML_HOMEPAGE_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Info Scanner - Home</title>
+    <title>Jojohn Info Scanner - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -99,7 +99,7 @@ HTML_HOMEPAGE_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Website Info Scanner
+                Jojohn Web Info Scanner
             </h1>
             
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
@@ -128,7 +128,7 @@ HTML_HOMEPAGE_TEMPLATE = """
         <div class="text-center animate-fadeIn max-w-2xl mx-auto p-4 sm:p-8 md:p-12">
             <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4">Discover Website Details Instantly</h2>
             <p class="text-base md:text-lg text-gray-400 mb-8">
-                Our Website Info Scanner tool provides you with crucial information about any website, including its IP address, geographical location, and hosting details. It's a simple, fast, and powerful way to gain insights.
+                Jojohn Web Info Scanner tool provides you with crucial information about any website, including its IP address, geographical location, and hosting details. It's a simple, fast, and powerful way to gain insights.
             </p>
             <a href="/scanner" class="button-hover button-active bg-red-600 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full shadow-lg transition-all duration-300 ease-in-out inline-flex items-center gap-2">
                 <i class="fa-solid fa-arrow-right-to-bracket icon-animation"></i>
@@ -157,7 +157,7 @@ HTML_SCANNER_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Info Scanner</title>
+    <title>Jojohn Web Info Scanner</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -255,7 +255,7 @@ HTML_SCANNER_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Website Info Scanner
+                Jojohn Web Info Scanner
             </h1>
             
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
@@ -533,7 +533,7 @@ HTML_GEOLOCATION_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Website Info Scanner
+                Jojohn Web Info Scanner
             </h1>
             
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
@@ -846,7 +846,7 @@ HTML_SPEEDTEST_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Website Info Scanner
+                Jojohn Web Info Scanner
             </h1>
             
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
@@ -1140,7 +1140,7 @@ HTML_CONTACT_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Info Scanner - Contact</title>
+    <title>Jojohn Web Info Scanner - Contact</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -1220,7 +1220,7 @@ HTML_CONTACT_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Website Info Scanner
+                Jojohn Web Info Scanner
             </h1>
             
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
@@ -1446,7 +1446,7 @@ HTML_HOMEPAGE_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Info Scanner - Home</title>
+    <title>Jojohn Web Info Scanner - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -1529,7 +1529,7 @@ HTML_HOMEPAGE_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Website Info Scanner
+                Jojohn Web Info Scanner
             </h1>
             
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
@@ -1558,7 +1558,7 @@ HTML_HOMEPAGE_TEMPLATE = """
         <div class="text-center animate-fadeIn max-w-2xl mx-auto p-4 sm:p-8 md:p-12">
             <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4">Discover Website Details Instantly</h2>
             <p class="text-base md:text-lg text-gray-400 mb-8">
-                Our Website Info Scanner tool provides you with crucial information about any website, including its IP address, geographical location, and hosting details. It's a simple, fast, and powerful way to gain insights.
+                Jojohn Web Info Scanner tool provides you with crucial information about any website, including its IP address, geographical location, and hosting details. It's a simple, fast, and powerful way to gain insights.
             </p>
             <a href="/scanner" class="button-hover button-active bg-red-600 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full shadow-lg transition-all duration-300 ease-in-out inline-flex items-center gap-2">
                 <i class="fa-solid fa-arrow-right-to-bracket icon-animation"></i>
@@ -1587,7 +1587,7 @@ HTML_SCANNER_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Info Scanner</title>
+    <title>Jojohn Web Info Scanner</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -1685,7 +1685,7 @@ HTML_SCANNER_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Website Info Scanner
+                Jojohn Web Info Scanner
             </h1>
             
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
@@ -2650,7 +2650,7 @@ HTML_CONTACT_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Website Info Scanner
+                Jojohn Web Info Scanner
             </h1>
             
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
