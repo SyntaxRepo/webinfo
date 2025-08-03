@@ -17,18 +17,19 @@ HTML_HOMEPAGE_TEMPLATE = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Info Scanner - Home</title>
-    <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Custom styles for animations and font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Prevents all scrolling by setting a fixed viewport height and hiding overflow */
-            overflow: hidden;
+            /* Prevents horizontal scrolling */
+            overflow-x: hidden;
             height: 100vh;
         }
         @keyframes fadeIn {
@@ -91,7 +92,6 @@ HTML_HOMEPAGE_TEMPLATE = """
 <body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
-    <!-- Navigation Header -->
     <header class="bg-gray-800 p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
@@ -99,12 +99,10 @@ HTML_HOMEPAGE_TEMPLATE = """
                 Website Info Scanner
             </h1>
             
-            <!-- Hamburger button for mobile -->
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
             
-            <!-- Desktop Navigation -->
             <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-red-500 font-bold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500">Home</a>
                 <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Scanner</a>
@@ -114,7 +112,6 @@ HTML_HOMEPAGE_TEMPLATE = """
             </nav>
         </div>
 
-        <!-- Mobile Navigation Menu (hidden by default) -->
         <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
             <a href="/" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Home</a>
             <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Scanner</a>
@@ -124,7 +121,6 @@ HTML_HOMEPAGE_TEMPLATE = """
         </nav>
     </header>
 
-    <!-- Main content for the homepage -->
     <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="text-center animate-fadeIn max-w-2xl mx-auto p-4 sm:p-8 md:p-12">
             <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4">Discover Website Details Instantly</h2>
@@ -159,18 +155,19 @@ HTML_SCANNER_TEMPLATE = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Info Scanner</title>
-    <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Custom styles for animations and font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Prevents all scrolling by setting a fixed viewport height and hiding overflow */
-            overflow: hidden;
+            /* Prevents horizontal scrolling */
+            overflow-x: hidden;
             height: 100vh;
         }
         @keyframes fadeIn {
@@ -248,7 +245,6 @@ HTML_SCANNER_TEMPLATE = """
 <body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
-    <!-- Navigation Header -->
     <header class="bg-gray-800 p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
@@ -256,12 +252,10 @@ HTML_SCANNER_TEMPLATE = """
                 Website Info Scanner
             </h1>
             
-            <!-- Hamburger button for mobile -->
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
             
-            <!-- Desktop Navigation -->
             <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
                 <a href="/scanner" class="text-red-500 font-bold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500">Scanner</a>
@@ -271,7 +265,6 @@ HTML_SCANNER_TEMPLATE = """
             </nav>
         </div>
 
-        <!-- Mobile Navigation Menu (hidden by default) -->
         <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
             <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Home</a>
             <a href="/scanner" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Scanner</a>
@@ -281,10 +274,8 @@ HTML_SCANNER_TEMPLATE = """
         </nav>
     </header>
     
-    <!-- Main content for the scanner -->
     <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gray-800 p-4 sm:p-8 md:p-12 rounded-2xl shadow-xl max-w-lg md:max-w-6xl w-full text-center border border-gray-700 relative z-10 animate-fadeIn">
-            <!-- Section for the Info Scanner -->
             <div class="bg-gray-700/50 p-4 sm:p-6 rounded-xl border border-gray-600">
                 <h2 class="text-xl md:text-2xl font-bold text-white mb-4">
                     <i class="fa-solid fa-satellite-dish text-red-500 mr-2 icon-slide-in"></i>
@@ -315,7 +306,6 @@ HTML_SCANNER_TEMPLATE = """
             
             <div class="flex flex-col md:flex-row gap-8 mt-8 md:items-stretch items-center">
                 <div id="results-container" class="flex-1">
-                    <!-- Loading indicator, error message, and results will be injected here by JS -->
                     <div id="loading-indicator" class="hidden text-center">
                         <i class="fa-solid fa-spinner fa-3x text-red-500 spinning"></i>
                         <p class="mt-4 text-gray-400 font-semibold">Scanning...</p>
@@ -327,8 +317,7 @@ HTML_SCANNER_TEMPLATE = """
                     </div>
                     
                     <div id="results-content" class="text-left hidden animate-fadeIn bg-gray-700 p-6 rounded-xl border border-gray-600 h-full">
-                        <!-- Results will be injected here -->
-                    </div>
+                        </div>
                 </div>
                 
                 <div id="map-container" class="flex-1 hidden animate-fadeIn">
@@ -441,18 +430,19 @@ HTML_GEOLOCATION_TEMPLATE = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Geolocation Scanner</title>
-    <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Custom styles for animations and font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Prevents all scrolling by setting a fixed viewport height and hiding overflow */
-            overflow: hidden;
+            /* Prevents horizontal scrolling */
+            overflow-x: hidden;
             height: 100vh;
         }
         @keyframes fadeIn {
@@ -530,7 +520,6 @@ HTML_GEOLOCATION_TEMPLATE = """
 <body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
-    <!-- Navigation Header -->
     <header class="bg-gray-800 p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
@@ -538,12 +527,10 @@ HTML_GEOLOCATION_TEMPLATE = """
                 Website Info Scanner
             </h1>
             
-            <!-- Hamburger button for mobile -->
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
             
-            <!-- Desktop Navigation -->
             <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
                 <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Scanner</a>
@@ -553,7 +540,6 @@ HTML_GEOLOCATION_TEMPLATE = """
             </nav>
         </div>
 
-        <!-- Mobile Navigation Menu (hidden by default) -->
         <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
             <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Home</a>
             <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Scanner</a>
@@ -563,10 +549,8 @@ HTML_GEOLOCATION_TEMPLATE = """
         </nav>
     </header>
     
-    <!-- Main content for the scanner -->
     <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gray-800 p-4 sm:p-8 md:p-12 rounded-2xl shadow-xl max-w-4xl w-full text-center border border-gray-700 relative z-10 animate-fadeIn">
-            <!-- Section for the Info Scanner -->
             <div class="bg-gray-700/50 p-4 sm:p-6 rounded-xl border border-gray-600">
                 <h2 class="text-xl md:text-2xl font-bold text-white mb-4">
                     <i class="fa-solid fa-map-location-dot text-red-500 mr-2 icon-slide-in"></i>
@@ -596,7 +580,6 @@ HTML_GEOLOCATION_TEMPLATE = """
             </div>
             
             <div id="results-container" class="mt-8 hidden animate-fadeIn">
-                <!-- Loading indicator, error message, and results will be injected here by JS -->
                 <div id="loading-indicator" class="hidden text-center">
                     <i class="fa-solid fa-spinner fa-3x text-red-500 spinning"></i>
                     <p class="mt-4 text-gray-400 font-semibold">Scanning...</p>
@@ -723,18 +706,19 @@ HTML_SPEEDTEST_TEMPLATE = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Internet Speed Test</title>
-    <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Custom styles for animations and font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Prevents all scrolling by setting a fixed viewport height and hiding overflow */
-            overflow: hidden;
+            /* Prevents horizontal scrolling */
+            overflow-x: hidden;
             height: 100vh;
         }
         @keyframes fadeIn {
@@ -846,7 +830,6 @@ HTML_SPEEDTEST_TEMPLATE = """
 <body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
-    <!-- Navigation Header -->
     <header class="bg-gray-800 p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
@@ -854,12 +837,10 @@ HTML_SPEEDTEST_TEMPLATE = """
                 Website Info Scanner
             </h1>
             
-            <!-- Hamburger button for mobile -->
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
             
-            <!-- Desktop Navigation -->
             <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
                 <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Scanner</a>
@@ -869,7 +850,6 @@ HTML_SPEEDTEST_TEMPLATE = """
             </nav>
         </div>
 
-        <!-- Mobile Navigation Menu (hidden by default) -->
         <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
             <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Home</a>
             <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Scanner</a>
@@ -879,7 +859,6 @@ HTML_SPEEDTEST_TEMPLATE = """
         </nav>
     </header>
     
-    <!-- Main content for the speed test -->
     <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gray-800 p-4 sm:p-8 md:p-12 rounded-2xl shadow-xl max-w-4xl w-full text-center border border-gray-700 relative z-10 animate-fadeIn">
             <div class="bg-gray-700/50 p-4 sm:p-6 rounded-xl border border-gray-600">
@@ -1150,18 +1129,19 @@ HTML_CONTACT_TEMPLATE = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Info Scanner - Contact</title>
-    <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Custom styles for animations and font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Prevents all scrolling by setting a fixed viewport height and hiding overflow */
-            overflow: hidden;
+            /* Prevents horizontal scrolling */
+            overflow-x: hidden;
             height: 100vh;
         }
         @keyframes fadeIn {
@@ -1217,7 +1197,6 @@ HTML_CONTACT_TEMPLATE = """
 <body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
-    <!-- Navigation Header -->
     <header class="bg-gray-800 p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
@@ -1225,12 +1204,10 @@ HTML_CONTACT_TEMPLATE = """
                 Website Info Scanner
             </h1>
             
-            <!-- Hamburger button for mobile -->
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
             
-            <!-- Desktop Navigation -->
             <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
                 <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Scanner</a>
@@ -1240,7 +1217,6 @@ HTML_CONTACT_TEMPLATE = """
             </nav>
         </div>
 
-        <!-- Mobile Navigation Menu (hidden by default) -->
         <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
             <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Home</a>
             <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Scanner</a>
@@ -1250,7 +1226,6 @@ HTML_CONTACT_TEMPLATE = """
         </nav>
     </header>
     
-    <!-- Main content for the contact page -->
     <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gray-800 p-4 sm:p-8 md:p-12 rounded-2xl shadow-xl max-w-lg w-full text-center border border-gray-700 relative z-10 animate-fadeIn">
             <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Contact Information</h2>
