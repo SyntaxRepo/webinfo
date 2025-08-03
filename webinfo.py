@@ -15,7 +15,7 @@ HTML_HOMEPAGE_TEMPLATE = """
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=0.45, shrink-to-fit=no">
     <title>Jojohn Web Info Scanner - Home</title>
     <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
