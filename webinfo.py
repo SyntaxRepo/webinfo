@@ -27,8 +27,9 @@ HTML_HOMEPAGE_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Prevents all scrolling */
+            /* Prevents all scrolling by setting a fixed viewport height and hiding overflow */
             overflow: hidden;
+            height: 100vh;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -73,9 +74,21 @@ HTML_HOMEPAGE_TEMPLATE = """
         .fade-in-down-icon {
             animation: fade-in-down 0.8s ease-out forwards;
         }
+        /* Mobile menu styling */
+        #mobile-menu.hidden {
+            display: none;
+        }
+        #mobile-menu.flex {
+            display: flex;
+        }
+        @media (min-width: 768px) {
+            #hamburger-button {
+                display: none;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
+<body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
     <!-- Navigation Header -->
@@ -85,18 +98,34 @@ HTML_HOMEPAGE_TEMPLATE = """
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
                 Website Info Scanner
             </h1>
-            <nav class="flex gap-4">
-                <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
+            
+            <!-- Hamburger button for mobile -->
+            <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            
+            <!-- Desktop Navigation -->
+            <nav id="desktop-nav" class="hidden md:flex gap-4">
+                <a href="/" class="text-red-500 font-bold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500">Home</a>
                 <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Scanner</a>
                 <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Geolocation Scanner</a>
                 <a href="/speedtest" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Speed Test</a>
                 <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Contact</a>
             </nav>
         </div>
+
+        <!-- Mobile Navigation Menu (hidden by default) -->
+        <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
+            <a href="/" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Home</a>
+            <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Scanner</a>
+            <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Geolocation Scanner</a>
+            <a href="/speedtest" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Speed Test</a>
+            <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Contact</a>
+        </nav>
     </header>
 
     <!-- Main content for the homepage -->
-    <main class="flex-grow flex items-center justify-center p-4">
+    <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="text-center animate-fadeIn max-w-2xl mx-auto p-4 sm:p-8 md:p-12">
             <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4">Discover Website Details Instantly</h2>
             <p class="text-base md:text-lg text-gray-400 mb-8">
@@ -108,6 +137,16 @@ HTML_HOMEPAGE_TEMPLATE = """
             </a>
         </div>
     </main>
+
+    <script>
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+    </script>
 </body>
 </html>
 """
@@ -130,8 +169,9 @@ HTML_SCANNER_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Prevents all scrolling */
+            /* Prevents all scrolling by setting a fixed viewport height and hiding overflow */
             overflow: hidden;
+            height: 100vh;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -191,9 +231,21 @@ HTML_SCANNER_TEMPLATE = """
         .fade-in-down-icon {
             animation: fade-in-down 0.8s ease-out forwards;
         }
+        /* Mobile menu styling */
+        #mobile-menu.hidden {
+            display: none;
+        }
+        #mobile-menu.flex {
+            display: flex;
+        }
+        @media (min-width: 768px) {
+            #hamburger-button {
+                display: none;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
+<body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
     <!-- Navigation Header -->
@@ -203,7 +255,14 @@ HTML_SCANNER_TEMPLATE = """
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
                 Website Info Scanner
             </h1>
-            <nav class="flex gap-4">
+            
+            <!-- Hamburger button for mobile -->
+            <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            
+            <!-- Desktop Navigation -->
+            <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
                 <a href="/scanner" class="text-red-500 font-bold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500">Scanner</a>
                 <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Geolocation Scanner</a>
@@ -211,10 +270,19 @@ HTML_SCANNER_TEMPLATE = """
                 <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Contact</a>
             </nav>
         </div>
+
+        <!-- Mobile Navigation Menu (hidden by default) -->
+        <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
+            <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Home</a>
+            <a href="/scanner" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Scanner</a>
+            <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Geolocation Scanner</a>
+            <a href="/speedtest" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Speed Test</a>
+            <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Contact</a>
+        </nav>
     </header>
     
     <!-- Main content for the scanner -->
-    <main class="flex-grow flex items-center justify-center p-4">
+    <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gray-800 p-4 sm:p-8 md:p-12 rounded-2xl shadow-xl max-w-lg md:max-w-6xl w-full text-center border border-gray-700 relative z-10 animate-fadeIn">
             <!-- Section for the Info Scanner -->
             <div class="bg-gray-700/50 p-4 sm:p-6 rounded-xl border border-gray-600">
@@ -282,6 +350,14 @@ HTML_SCANNER_TEMPLATE = """
         const errorMessage = document.getElementById('error-message');
         const mapContainer = document.getElementById('map-container');
         const mapIframe = document.getElementById('map');
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Toggle mobile menu visibility
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
 
         // Add a listener for the form submission event
         form.addEventListener('submit', async (e) => {
@@ -375,8 +451,9 @@ HTML_GEOLOCATION_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Prevents all scrolling */
+            /* Prevents all scrolling by setting a fixed viewport height and hiding overflow */
             overflow: hidden;
+            height: 100vh;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -436,9 +513,21 @@ HTML_GEOLOCATION_TEMPLATE = """
         .fade-in-down-icon {
             animation: fade-in-down 0.8s ease-out forwards;
         }
+        /* Mobile menu styling */
+        #mobile-menu.hidden {
+            display: none;
+        }
+        #mobile-menu.flex {
+            display: flex;
+        }
+        @media (min-width: 768px) {
+            #hamburger-button {
+                display: none;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
+<body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
     <!-- Navigation Header -->
@@ -448,7 +537,14 @@ HTML_GEOLOCATION_TEMPLATE = """
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
                 Website Info Scanner
             </h1>
-            <nav class="flex gap-4">
+            
+            <!-- Hamburger button for mobile -->
+            <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            
+            <!-- Desktop Navigation -->
+            <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
                 <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Scanner</a>
                 <a href="/geolocation-scanner" class="text-red-500 font-bold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500">Geolocation Scanner</a>
@@ -456,10 +552,19 @@ HTML_GEOLOCATION_TEMPLATE = """
                 <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Contact</a>
             </nav>
         </div>
+
+        <!-- Mobile Navigation Menu (hidden by default) -->
+        <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
+            <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Home</a>
+            <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Scanner</a>
+            <a href="/geolocation-scanner" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Geolocation Scanner</a>
+            <a href="/speedtest" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Speed Test</a>
+            <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Contact</a>
+        </nav>
     </header>
     
     <!-- Main content for the scanner -->
-    <main class="flex-grow flex items-center justify-center p-4">
+    <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gray-800 p-4 sm:p-8 md:p-12 rounded-2xl shadow-xl max-w-4xl w-full text-center border border-gray-700 relative z-10 animate-fadeIn">
             <!-- Section for the Info Scanner -->
             <div class="bg-gray-700/50 p-4 sm:p-6 rounded-xl border border-gray-600">
@@ -528,6 +633,14 @@ HTML_GEOLOCATION_TEMPLATE = """
         const addressText = document.getElementById('address-text');
         const mapContainer = document.getElementById('map-container');
         const mapIframe = document.getElementById('map');
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Toggle mobile menu visibility
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
 
         // Add a listener for the form submission event
         form.addEventListener('submit', async (e) => {
@@ -620,8 +733,9 @@ HTML_SPEEDTEST_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Prevents all scrolling */
+            /* Prevents all scrolling by setting a fixed viewport height and hiding overflow */
             overflow: hidden;
+            height: 100vh;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -715,9 +829,21 @@ HTML_SPEEDTEST_TEMPLATE = """
             transform: translate(-50%, -50%);
             text-align: center;
         }
+        /* Mobile menu styling */
+        #mobile-menu.hidden {
+            display: none;
+        }
+        #mobile-menu.flex {
+            display: flex;
+        }
+        @media (min-width: 768px) {
+            #hamburger-button {
+                display: none;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
+<body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
     <!-- Navigation Header -->
@@ -727,7 +853,14 @@ HTML_SPEEDTEST_TEMPLATE = """
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
                 Website Info Scanner
             </h1>
-            <nav class="flex gap-4">
+            
+            <!-- Hamburger button for mobile -->
+            <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            
+            <!-- Desktop Navigation -->
+            <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
                 <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Scanner</a>
                 <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Geolocation Scanner</a>
@@ -735,10 +868,19 @@ HTML_SPEEDTEST_TEMPLATE = """
                 <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Contact</a>
             </nav>
         </div>
+
+        <!-- Mobile Navigation Menu (hidden by default) -->
+        <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
+            <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Home</a>
+            <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Scanner</a>
+            <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Geolocation Scanner</a>
+            <a href="/speedtest" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Speed Test</a>
+            <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Contact</a>
+        </nav>
     </header>
     
     <!-- Main content for the speed test -->
-    <main class="flex-grow flex items-center justify-center p-4">
+    <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gray-800 p-4 sm:p-8 md:p-12 rounded-2xl shadow-xl max-w-4xl w-full text-center border border-gray-700 relative z-10 animate-fadeIn">
             <div class="bg-gray-700/50 p-4 sm:p-6 rounded-xl border border-gray-600">
                 <h2 class="text-xl md:text-2xl font-bold text-white mb-4">
@@ -803,6 +945,14 @@ HTML_SPEEDTEST_TEMPLATE = """
         const meterValue = document.getElementById('meter-value');
         const meterUnit = document.getElementById('meter-unit');
         const meterFill = document.getElementById('meter-fill');
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Toggle mobile menu visibility
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
 
         // Configuration variables for the test
         const PING_COUNT = 5;
@@ -1010,8 +1160,9 @@ HTML_CONTACT_TEMPLATE = """
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            /* Prevents all scrolling */
+            /* Prevents all scrolling by setting a fixed viewport height and hiding overflow */
             overflow: hidden;
+            height: 100vh;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -1049,9 +1200,21 @@ HTML_CONTACT_TEMPLATE = """
         .fade-in-down-icon {
             animation: fade-in-down 0.8s ease-out forwards;
         }
+        /* Mobile menu styling */
+        #mobile-menu.hidden {
+            display: none;
+        }
+        #mobile-menu.flex {
+            display: flex;
+        }
+        @media (min-width: 768px) {
+            #hamburger-button {
+                display: none;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
+<body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
     <!-- Navigation Header -->
@@ -1061,7 +1224,14 @@ HTML_CONTACT_TEMPLATE = """
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
                 Website Info Scanner
             </h1>
-            <nav class="flex gap-4">
+            
+            <!-- Hamburger button for mobile -->
+            <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            
+            <!-- Desktop Navigation -->
+            <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
                 <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Scanner</a>
                 <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Geolocation Scanner</a>
@@ -1069,10 +1239,19 @@ HTML_CONTACT_TEMPLATE = """
                 <a href="/contact" class="text-red-500 font-bold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500">Contact</a>
             </nav>
         </div>
+
+        <!-- Mobile Navigation Menu (hidden by default) -->
+        <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
+            <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Home</a>
+            <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Scanner</a>
+            <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Geolocation Scanner</a>
+            <a href="/speedtest" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Speed Test</a>
+            <a href="/contact" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Contact</a>
+        </nav>
     </header>
     
     <!-- Main content for the contact page -->
-    <main class="flex-grow flex items-center justify-center p-4">
+    <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gray-800 p-4 sm:p-8 md:p-12 rounded-2xl shadow-xl max-w-lg w-full text-center border border-gray-700 relative z-10 animate-fadeIn">
             <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Contact Information</h2>
             <p class="text-sm md:text-base text-gray-400 mb-6">Feel free to reach out using the details below.</p>
@@ -1102,10 +1281,19 @@ HTML_CONTACT_TEMPLATE = """
             </div>
         </div>
     </main>
+
+    <script>
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+    </script>
 </body>
 </html>
 """
-
 
 # Define the main route for the homepage
 @app.route('/')
