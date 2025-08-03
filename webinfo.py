@@ -1963,7 +1963,7 @@ HTML_GEOLOCATION_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Website Info Scanner
+                Jojohn Web Info Scanner
             </h1>
             
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
@@ -2276,7 +2276,7 @@ HTML_SPEEDTEST_TEMPLATE = """
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Website Info Scanner
+                Jojohn Web Info Scanner
             </h1>
             
             <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
@@ -2570,7 +2570,7 @@ HTML_CONTACT_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Info Scanner - Contact</title>
+    <title>Jojohn Web Info Scanner - Contact</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
