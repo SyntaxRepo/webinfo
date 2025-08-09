@@ -1,4 +1,5 @@
 
+# Import necessary modules from Flask and other libraries
 from flask import Flask, render_template_string, request, jsonify, make_response, Response
 import socket
 import requests
@@ -19,21 +20,6 @@ HTML_HOMEPAGE_TEMPLATE = """
     <title>Jojohn Info Scanner - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <link rel="manifest" href="/manifest.json">
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('Service Worker registration failed:', error);
-                    });
-            });
-        }
-    </script>
     <style>
         html { overflow-x: hidden; } /* Fix: Prevent horizontal scroll on html element */
         /* Custom styles for animations and font */
