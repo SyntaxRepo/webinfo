@@ -1,12 +1,14 @@
 # Import necessary modules from Flask and other libraries
-from flask import Flask, render_template_string, request, jsonify, make_response, Response
+from flask import Flask, render_template_string, request, jsonify, make_response, Response, send_from_directory
 import socket
 import requests
 import io
 import random
 import time
+import os
 
 # Initialize the Flask application
+# static_folder is removed as PWA files will be served from root via explicit routes
 app = Flask(__name__)
 
 # The HTML template for the main homepage
@@ -16,18 +18,44 @@ HTML_HOMEPAGE_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jojohn Web Info Scanner - Home</title>
-    <!-- Tailwind CSS CDN for modern styling -->
+    <title>Website Info Scanner - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+    <!-- PWA: Link to manifest and register service worker -->
+
+
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+    
     <style>
+        html { overflow-x: hidden; } /* Fix: Prevent horizontal scroll on html element */
         /* Custom styles for animations and font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
-            overflow: hidden;
+            /* Fix: Explicitly prevent horizontal scrolling, allow vertical */
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: 100vh;
+            width: 100vw; /* Fix: Ensure body takes full viewport width */
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -72,34 +100,57 @@ HTML_HOMEPAGE_TEMPLATE = """
         .fade-in-down-icon {
             animation: fade-in-down 0.8s ease-out forwards;
         }
+        /* Mobile menu styling */
+        #mobile-menu.hidden {
+            display: none;
+        }
+        #mobile-menu.flex {
+            display: flex;
+        }
+        @media (min-width: 768px) {
+            #hamburger-button {
+                display: none;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
+<body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
-    <!-- Navigation Header -->
     <header class="bg-gray-800 p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Jojohn Web Info Scanner
+                Website Info Scanner
             </h1>
-            <nav class="flex gap-4">
-                <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
+            
+            <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            
+            <nav id="desktop-nav" class="hidden md:flex gap-4">
+                <a href="/" class="text-red-500 font-bold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500">Home</a>
                 <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Scanner</a>
                 <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Geolocation Scanner</a>
                 <a href="/speedtest" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Speed Test</a>
                 <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Contact</a>
             </nav>
         </div>
+
+        <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
+            <a href="/" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Home</a>
+            <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Scanner</a>
+            <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Geolocation Scanner</a>
+            <a href="/speedtest" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Speed Test</a>
+            <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Contact</a>
+        </nav>
     </header>
 
-    <!-- Main content for the homepage -->
-    <main class="flex-grow flex items-center justify-center p-4">
+    <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="text-center animate-fadeIn max-w-2xl mx-auto p-4 sm:p-8 md:p-12">
             <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4">Discover Website Details Instantly</h2>
             <p class="text-base md:text-lg text-gray-400 mb-8">
-                Jojohn Web Info Scanner tool provides you with crucial information about any website, including its IP address, geographical location, and hosting details. It's a simple, fast, and powerful way to gain insights.
+                Our Website Info Scanner tool provides you with crucial information about any website, including its IP address, geographical location, and hosting details. It's a simple, fast, and powerful way to gain insights.
             </p>
             <a href="/scanner" class="button-hover button-active bg-red-600 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full shadow-lg transition-all duration-300 ease-in-out inline-flex items-center gap-2">
                 <i class="fa-solid fa-arrow-right-to-bracket icon-animation"></i>
@@ -107,6 +158,16 @@ HTML_HOMEPAGE_TEMPLATE = """
             </a>
         </div>
     </main>
+
+    <script>
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+    </script>
 </body>
 </html>
 """
@@ -118,18 +179,39 @@ HTML_SCANNER_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jojohn Web Info Scanner</title>
-    <!-- Tailwind CSS CDN for modern styling -->
+    <title>Website Info Scanner</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA: Link to manifest and register service worker -->
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
     <style>
+        html { overflow-x: hidden; } /* Fix: Prevent horizontal scroll on html element */
         /* Custom styles for animations and font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
+            /* Fix: Explicitly prevent horizontal scrolling, allow vertical */
             overflow-x: hidden;
+            overflow-y: auto;
+            height: 100vh;
+            width: 100vw; /* Fix: Ensure body takes full viewport width */
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -189,19 +271,35 @@ HTML_SCANNER_TEMPLATE = """
         .fade-in-down-icon {
             animation: fade-in-down 0.8s ease-out forwards;
         }
+        /* Mobile menu styling */
+        #mobile-menu.hidden {
+            display: none;
+        }
+        #mobile-menu.flex {
+            display: flex;
+        }
+        @media (min-width: 768px) {
+            #hamburger-button {
+                display: none;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
+<body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
-    <!-- Navigation Header -->
     <header class="bg-gray-800 p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Jojohn Web Info Scanner
+                Website Info Scanner
             </h1>
-            <nav class="flex gap-4">
+            
+            <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            
+            <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
                 <a href="/scanner" class="text-red-500 font-bold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500">Scanner</a>
                 <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Geolocation Scanner</a>
@@ -209,12 +307,18 @@ HTML_SCANNER_TEMPLATE = """
                 <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Contact</a>
             </nav>
         </div>
+
+        <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
+            <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Home</a>
+            <a href="/scanner" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Scanner</a>
+            <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Geolocation Scanner</a>
+            <a href="/speedtest" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Speed Test</a>
+            <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Contact</a>
+        </nav>
     </header>
     
-    <!-- Main content for the scanner -->
-    <main class="flex-grow flex items-center justify-center p-4">
+    <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gray-800 p-4 sm:p-8 md:p-12 rounded-2xl shadow-xl max-w-lg md:max-w-6xl w-full text-center border border-gray-700 relative z-10 animate-fadeIn">
-            <!-- Section for the Info Scanner -->
             <div class="bg-gray-700/50 p-4 sm:p-6 rounded-xl border border-gray-600">
                 <h2 class="text-xl md:text-2xl font-bold text-white mb-4">
                     <i class="fa-solid fa-satellite-dish text-red-500 mr-2 icon-slide-in"></i>
@@ -245,7 +349,6 @@ HTML_SCANNER_TEMPLATE = """
             
             <div class="flex flex-col md:flex-row gap-8 mt-8 md:items-stretch items-center">
                 <div id="results-container" class="flex-1">
-                    <!-- Loading indicator, error message, and results will be injected here by JS -->
                     <div id="loading-indicator" class="hidden text-center">
                         <i class="fa-solid fa-spinner fa-3x text-red-500 spinning"></i>
                         <p class="mt-4 text-gray-400 font-semibold">Scanning...</p>
@@ -257,8 +360,7 @@ HTML_SCANNER_TEMPLATE = """
                     </div>
                     
                     <div id="results-content" class="text-left hidden animate-fadeIn bg-gray-700 p-6 rounded-xl border border-gray-600 h-full">
-                        <!-- Results will be injected here -->
-                    </div>
+                        </div>
                 </div>
                 
                 <div id="map-container" class="flex-1 hidden animate-fadeIn">
@@ -280,6 +382,14 @@ HTML_SCANNER_TEMPLATE = """
         const errorMessage = document.getElementById('error-message');
         const mapContainer = document.getElementById('map-container');
         const mapIframe = document.getElementById('map');
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Toggle mobile menu visibility
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
 
         // Add a listener for the form submission event
         form.addEventListener('submit', async (e) => {
@@ -363,17 +473,38 @@ HTML_GEOLOCATION_TEMPLATE = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Geolocation Scanner</title>
-    <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA: Link to manifest and register service worker -->
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
     <style>
+        html { overflow-x: hidden; } /* Fix: Prevent horizontal scroll on html element */
         /* Custom styles for animations and font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
+            /* Fix: Explicitly prevent horizontal scrolling, allow vertical */
             overflow-x: hidden;
+            overflow-y: auto;
+            height: 100vh;
+            width: 100vw; /* Fix: Ensure body takes full viewport width */
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -433,19 +564,35 @@ HTML_GEOLOCATION_TEMPLATE = """
         .fade-in-down-icon {
             animation: fade-in-down 0.8s ease-out forwards;
         }
+        /* Mobile menu styling */
+        #mobile-menu.hidden {
+            display: none;
+        }
+        #mobile-menu.flex {
+            display: flex;
+        }
+        @media (min-width: 768px) {
+            #hamburger-button {
+                display: none;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
+<body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
-    <!-- Navigation Header -->
     <header class="bg-gray-800 p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Jojohn Web Info Scanner
+                Website Info Scanner
             </h1>
-            <nav class="flex gap-4">
+            
+            <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            
+            <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
                 <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Scanner</a>
                 <a href="/geolocation-scanner" class="text-red-500 font-bold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500">Geolocation Scanner</a>
@@ -453,12 +600,18 @@ HTML_GEOLOCATION_TEMPLATE = """
                 <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Contact</a>
             </nav>
         </div>
+
+        <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
+            <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Home</a>
+            <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Scanner</a>
+            <a href="/geolocation-scanner" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Geolocation Scanner</a>
+            <a href="/speedtest" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Speed Test</a>
+            <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Contact</a>
+        </nav>
     </header>
     
-    <!-- Main content for the scanner -->
-    <main class="flex-grow flex items-center justify-center p-4">
+    <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gray-800 p-4 sm:p-8 md:p-12 rounded-2xl shadow-xl max-w-4xl w-full text-center border border-gray-700 relative z-10 animate-fadeIn">
-            <!-- Section for the Info Scanner -->
             <div class="bg-gray-700/50 p-4 sm:p-6 rounded-xl border border-gray-600">
                 <h2 class="text-xl md:text-2xl font-bold text-white mb-4">
                     <i class="fa-solid fa-map-location-dot text-red-500 mr-2 icon-slide-in"></i>
@@ -488,7 +641,6 @@ HTML_GEOLOCATION_TEMPLATE = """
             </div>
             
             <div id="results-container" class="mt-8 hidden animate-fadeIn">
-                <!-- Loading indicator, error message, and results will be injected here by JS -->
                 <div id="loading-indicator" class="hidden text-center">
                     <i class="fa-solid fa-spinner fa-3x text-red-500 spinning"></i>
                     <p class="mt-4 text-gray-400 font-semibold">Scanning...</p>
@@ -525,6 +677,14 @@ HTML_GEOLOCATION_TEMPLATE = """
         const addressText = document.getElementById('address-text');
         const mapContainer = document.getElementById('map-container');
         const mapIframe = document.getElementById('map');
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Toggle mobile menu visibility
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
 
         // Add a listener for the form submission event
         form.addEventListener('submit', async (e) => {
@@ -607,17 +767,38 @@ HTML_SPEEDTEST_TEMPLATE = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Internet Speed Test</title>
-    <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA: Link to manifest and register service worker -->
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
     <style>
+        html { overflow-x: hidden; } /* Fix: Prevent horizontal scroll on html element */
         /* Custom styles for animations and font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
+            /* Fix: Explicitly prevent horizontal scrolling, allow vertical */
             overflow-x: hidden;
+            overflow-y: auto;
+            height: 100vh;
+            width: 100vw; /* Fix: Ensure body takes full viewport width */
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -699,7 +880,7 @@ HTML_SPEEDTEST_TEMPLATE = """
             height: 250px;
             border-radius: 50%;
             background: conic-gradient(from 135deg, transparent 0deg 45deg, #ef4444 45deg 135deg, transparent 135deg 180deg);
-            clip-path: polygon(0% 100%, 100% 100%, 50% 50%);
+            clip-path: polygon(0% 100%, 100% 50%, 50% 50%); /* Adjusted clip-path for correct meter behavior */
             transform-origin: 50% 50%;
             transform: rotate(0deg);
             transition: transform 0.5s ease-out;
@@ -711,19 +892,35 @@ HTML_SPEEDTEST_TEMPLATE = """
             transform: translate(-50%, -50%);
             text-align: center;
         }
+        /* Mobile menu styling */
+        #mobile-menu.hidden {
+            display: none;
+        }
+        #mobile-menu.flex {
+            display: flex;
+        }
+        @media (min-width: 768px) {
+            #hamburger-button {
+                display: none;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
+<body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
-    <!-- Navigation Header -->
     <header class="bg-gray-800 p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Jojohn Web Info Scanner
+                Website Info Scanner
             </h1>
-            <nav class="flex gap-4">
+            
+            <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            
+            <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
                 <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Scanner</a>
                 <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Geolocation Scanner</a>
@@ -731,10 +928,17 @@ HTML_SPEEDTEST_TEMPLATE = """
                 <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Contact</a>
             </nav>
         </div>
+
+        <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
+            <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Home</a>
+            <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Scanner</a>
+            <a href="/geolocation-scanner" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Geolocation Scanner</a>
+            <a href="/speedtest" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Speed Test</a>
+            <a href="/contact" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Contact</a>
+        </nav>
     </header>
     
-    <!-- Main content for the speed test -->
-    <main class="flex-grow flex items-center justify-center p-4">
+    <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gray-800 p-4 sm:p-8 md:p-12 rounded-2xl shadow-xl max-w-4xl w-full text-center border border-gray-700 relative z-10 animate-fadeIn">
             <div class="bg-gray-700/50 p-4 sm:p-6 rounded-xl border border-gray-600">
                 <h2 class="text-xl md:text-2xl font-bold text-white mb-4">
@@ -799,6 +1003,14 @@ HTML_SPEEDTEST_TEMPLATE = """
         const meterValue = document.getElementById('meter-value');
         const meterUnit = document.getElementById('meter-unit');
         const meterFill = document.getElementById('meter-fill');
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Toggle mobile menu visibility
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
 
         // Configuration variables for the test
         const PING_COUNT = 5;
@@ -995,18 +1207,39 @@ HTML_CONTACT_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jojoh Web Info Scanner - Contact</title>
-    <!-- Tailwind CSS CDN for modern styling -->
+    <title>Website Info Scanner - Contact</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA: Link to manifest and register service worker -->
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
     <style>
+        html { overflow-x: hidden; } /* Fix: Prevent horizontal scroll on html element */
         /* Custom styles for animations and font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
+            /* Fix: Explicitly prevent horizontal scrolling, allow vertical */
             overflow-x: hidden;
+            overflow-y: auto;
+            height: 100vh;
+            width: 100vw; /* Fix: Ensure body takes full viewport width */
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -1044,19 +1277,39 @@ HTML_CONTACT_TEMPLATE = """
         .fade-in-down-icon {
             animation: fade-in-down 0.8s ease-out forwards;
         }
+        /* Fix: For email address wrapping */
+        .email-address-wrap {
+            word-break: break-all;
+        }
+        /* Mobile menu styling */
+        #mobile-menu.hidden {
+            display: none;
+        }
+        #mobile-menu.flex {
+            display: flex;
+        }
+        @media (min-width: 768px) {
+            #hamburger-button {
+                display: none;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
+<body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <div class="animated-background"></div>
 
-    <!-- Navigation Header -->
     <header class="bg-gray-800 p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-extrabold text-red-500 flex items-center">
                 <i class="fa-solid fa-signal text-red-500 mr-2 fade-in-down-icon"></i>
-                Jojohn Web Info Scanner
+                Website Info Scanner
             </h1>
-            <nav class="flex gap-4">
+            
+            <button id="hamburger-button" class="text-gray-300 md:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            
+            <nav id="desktop-nav" class="hidden md:flex gap-4">
                 <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Home</a>
                 <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Scanner</a>
                 <a href="/geolocation-scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200">Geolocation Scanner</a>
@@ -1064,10 +1317,17 @@ HTML_CONTACT_TEMPLATE = """
                 <a href="/contact" class="text-red-500 font-bold px-2 md:px-4 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500">Contact</a>
             </nav>
         </div>
+
+        <nav id="mobile-menu" class="hidden flex-col items-center gap-4 mt-4 md:hidden">
+            <a href="/" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Home</a>
+            <a href="/scanner" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Scanner</a>
+            <a href="/geolocation-scanner" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Geolocation Scanner</a>
+            <a href="/speedtest" class="text-gray-300 hover:text-red-500 font-semibold px-2 py-2 rounded-lg transition-colors duration-200 w-full text-center">Speed Test</a>
+            <a href="/contact" class="text-red-500 font-bold px-2 py-2 rounded-lg transition-colors duration-200 border-b-2 border-red-500 w-full text-center">Contact</a>
+        </nav>
     </header>
     
-    <!-- Main content for the contact page -->
-    <main class="flex-grow flex items-center justify-center p-4">
+    <main class="flex-grow flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gray-800 p-4 sm:p-8 md:p-12 rounded-2xl shadow-xl max-w-lg w-full text-center border border-gray-700 relative z-10 animate-fadeIn">
             <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Contact Information</h2>
             <p class="text-sm md:text-base text-gray-400 mb-6">Feel free to reach out using the details below.</p>
@@ -1075,10 +1335,8 @@ HTML_CONTACT_TEMPLATE = """
             <div class="flex flex-col gap-6 text-left">
                 <div class="flex items-center gap-4 p-4 bg-gray-700/50 rounded-xl border border-gray-600">
                     <i class="fa-solid fa-envelope text-red-500 text-2xl"></i>
-                    <div>
-                        <h4 class="text-gray-300 font-semibold">Email Address</h4>
-                        <p class="text-white">jomerjohnvalmoriaalavarado@gmail.com</p>
-                    </div>
+                    <div class="min-w-0"> <h4 class="text-gray-300 font-semibold">Email Address</h4>
+                        <p class="text-white email-address-wrap">jomerjohnvalmoriaalavarado@gmail.com</p> </div>
                 </div>
                 <div class="flex items-center gap-4 p-4 bg-gray-700/50 rounded-xl border border-gray-600">
                     <i class="fa-solid fa-phone text-red-500 text-2xl"></i>
@@ -1097,10 +1355,19 @@ HTML_CONTACT_TEMPLATE = """
             </div>
         </div>
     </main>
+
+    <script>
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+    </script>
 </body>
 </html>
 """
-
 
 # Define the main route for the homepage
 @app.route('/')
@@ -1142,6 +1409,93 @@ def contact():
     """
     return render_template_string(HTML_CONTACT_TEMPLATE)
 
+# PWA: Serve service worker from the root
+@app.route('/sw.js')
+def serve_service_worker():
+    """
+    Serves the PWA service worker file from the root.
+    """
+    sw_content = """
+const CACHE_NAME = 'webinfo-cache-v1';
+const urlsToCache = [
+  '/',
+  '/scanner',
+  '/geolocation-scanner',
+  '/speedtest',
+  '/contact',
+  'https://cdn.tailwindcss.com',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
+  '/manifest.json',
+  '/sw.js', // The service worker itself needs to be cached
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png'
+];
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
+      .catch(error => {
+        console.error('Failed to cache:', error);
+      })
+  );
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        // If the request is in the cache, return it
+        if (response) {
+          return response;
+        }
+        // Otherwise, fetch from the network
+        return fetch(event.request).catch(() => {
+            // If network fails and request is for an HTML page,
+            // you might want to serve an offline page.
+            // For simplicity, we're not implementing a full offline page here.
+            console.log('Network request failed and no cache match for:', event.request.url);
+        });
+      })
+  );
+});
+
+// Optional: Activate event to clear old caches
+self.addEventListener('activate', event => {
+  const cacheWhitelist = [CACHE_NAME];
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+"""
+    response = make_response(sw_content)
+    response.headers['Content-Type'] = 'application/javascript'
+    return response
+
+# PWA: Serve icons from the /icons directory in the root
+@app.route('/icons/<filename>')
+def serve_icon(filename):
+    """
+    Serves icon files from the 'icons' directory in the root.
+    You need to create an 'icons' folder in the same directory as webinfo.py
+    and place your icon-192x192.png and icon-512x512.png files there.
+    """
+    # Ensure the 'icons' directory exists in the current working directory
+    # For deployment, ensure your deployment environment supports serving static files this way
+    # For local testing, create a directory named 'icons' next to webinfo.py
+    icon_dir = os.path.join(os.path.dirname(__file__), 'icons')
+    return send_from_directory(icon_dir, filename)
 
 # Define the API endpoint for scanning a website
 @app.route('/scan', methods=['POST'])
