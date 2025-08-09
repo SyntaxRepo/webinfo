@@ -21,11 +21,7 @@ HTML_HOMEPAGE_TEMPLATE = """
     <title>Website Info Scanner - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-
     <!-- PWA: Link to manifest and register service worker -->
-
-
     <link rel="manifest" href="/manifest.json">
     <script>
         if ('serviceWorker' in navigator) {
@@ -40,7 +36,6 @@ HTML_HOMEPAGE_TEMPLATE = """
             });
         }
     </script>
-    
     <style>
         html { overflow-x: hidden; } /* Fix: Prevent horizontal scroll on html element */
         /* Custom styles for animations and font */
