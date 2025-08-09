@@ -8,7 +8,7 @@ const urlsToCache = [
   'https://cdn.tailwindcss.com',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
   '/manifest.json',
-  '/icons/logo.svg' // Assuming your logo.svg is in an /icons directory
+  '/icons/logo.png' // Assuming your logo.svg is in an /icons directory
 ];
 
 // Install event: This is triggered when the service worker is installed.
